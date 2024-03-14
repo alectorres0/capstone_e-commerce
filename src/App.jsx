@@ -12,6 +12,7 @@ function App() {
 
   return (
     <>
+    <Navbar/>
     <Routes>
       <Route path = "*" element = {<Home/>}/>
       <Route path = "/mens" element = {<Mens/>}/>
@@ -19,7 +20,7 @@ function App() {
       <Route path = "/electronics" element = {<Electronics/>}/>
       <Route path = "/jewelery" element = {<Jewelery/>}/>
     </Routes>
-    <Navbar/>
+    
    </>
   )
 }
