@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import { getElectronics } from '../API'
+import ItemCard from './ItemCard'
 
 
 const Electronics = () =>{
@@ -18,7 +19,7 @@ const Electronics = () =>{
     <div>
     <h1>Electronics</h1>
         {electronics.map((item)=>{
-            return(<p key = {item.id}>{`${item.title}`}</p>)
+            return(<ItemCard key = {item.id} item = {item}/>)
 
         })}
     

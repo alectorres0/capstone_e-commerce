@@ -1,6 +1,6 @@
 import {useState,useEffect} from 'react'
 import {getWomens} from '../API'
-
+import ItemCard from './ItemCard'
 const Womens = () =>{
     const [womens, setWomens] = useState([])
     useEffect(()=>{
@@ -17,7 +17,7 @@ const Womens = () =>{
     <div>
     <h1>Women's Clothing</h1>
         {womens.map((item)=>{
-            return(<p key = {item.id}>{`${item.title}`}</p>)
+            return(<ItemCard key = {item.id} item = {item}/>)
 
         })}
     
