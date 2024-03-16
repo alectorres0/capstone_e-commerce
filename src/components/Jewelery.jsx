@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import { getJewelery } from '../API'
-
+import ItemCard from './ItemCard'
 const Jewelery = () =>{
     const [jewelery, setJewelery] = useState([])
     useEffect(()=>{
@@ -15,9 +15,9 @@ const Jewelery = () =>{
     
     return (
     <div>
-    <h1>Electronics</h1>
+    <h1>Jewelery</h1>
         {jewelery.map((item)=>{
-            return(<p key = {item.id}>{`${item.title}`}</p>)
+            return(<ItemCard key = {item.id} item = {item}/>)
 
         })}
     
