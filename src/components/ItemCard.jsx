@@ -1,6 +1,7 @@
-
+import {useNavigate} from "react-router-dom"
 
 const ItemCard = ({item}) =>{
+    const navigate = useNavigate();
 return(
     <div className = "itemcard">
         <img src = {item.image}></img>
