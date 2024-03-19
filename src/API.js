@@ -52,3 +52,17 @@ return data
         console.error(err);
     }
 }
+
+export async function getItem(id){
+
+    try{
+        const response = await fetch (`${baseURL}/products/${id}`);
+        const data = await response.json();
+        return data;
+    }
+
+    catch(err){
+        console.error(err);
+
+    }
+}
