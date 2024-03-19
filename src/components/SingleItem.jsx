@@ -7,7 +7,8 @@ const [data, setData] = useState({});
 
 useEffect(()=>{
 const getData = async() =>{
-setData(await getItem(id));
+const item = await getItem(id);
+setData(item);
 
 }
 getData();
@@ -15,7 +16,7 @@ getData();
 
 return(
 <>
-<p>{data.item}</p>
+<p>{data.title}</p>
 
 </>
 
