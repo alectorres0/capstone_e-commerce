@@ -7,7 +7,8 @@ const [data, setData] = useState({});
 
 useEffect(()=>{
 const getData = async() =>{
-setData(await getItem(id));
+    const item = await getItem(id);
+    setData(item);
 
 }
 getData();
