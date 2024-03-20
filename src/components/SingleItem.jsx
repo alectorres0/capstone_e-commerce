@@ -7,14 +7,17 @@ const [data, setData] = useState({});
 
 useEffect(()=>{
 const getData = async() =>{
+
 const item = await getItem(id);
 setData(item);
+
 
 }
 getData();
 },[])
 
 return(
+
 <div className = "singleItem">
 <img src = {data.image}></img>
 <div className = "itemDescription">
@@ -23,6 +26,7 @@ return(
 <p>{data.description}</p>
 </div>
 </div>
+
 
 )
 
