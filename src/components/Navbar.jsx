@@ -6,8 +6,8 @@ const Navbar = () =>{
     <nav >
         <ul>
         <li><Link to ="/">Home</Link></li>
-        <li><Link to ="/mens">Men's Clothing</Link></li>
-        <li><Link to = "/womens">Women's Clothing</Link></li>
+        <li><Link to ="/men's clothing">Men's Clothing</Link></li>
+        <li><Link to = "/women's clothing">Women's Clothing</Link></li>
         <li><Link to = "/electronics">Electronics</Link></li>
         <li><Link to = "/jewelery">Jewelery</Link></li>
         </ul>

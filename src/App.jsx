@@ -16,8 +16,8 @@ function App() {
     <Navbar/>
     <Routes>
       <Route path = "*" element = {<Home/>}/>
-      <Route path = "/mens" element = {<Mens/>}/>
-      <Route path = "/womens" element = {<Womens/>}/>
+      <Route path = "/men's clothing" element = {<Mens/>}/>
+      <Route path = "/women's clothing" element = {<Womens/>}/>
       <Route path = "/electronics" element = {<Electronics/>}/>
       <Route path = "/jewelery" element = {<Jewelery/>}/>
       <Route path = "/item/:name/:id" element = {<SingleItem />}/>
