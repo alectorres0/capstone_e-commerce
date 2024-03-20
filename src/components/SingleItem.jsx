@@ -16,7 +16,7 @@ getData();
 
 return(
 <>
-<p>{data.item}</p>
+<p>{data.title}</p>
 
 </>
 
