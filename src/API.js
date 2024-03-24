@@ -66,3 +66,37 @@ export async function getItem(id){
 
     }
 }
+
+export async function addUser(user){
+
+    try{
+        const response = await fetch(`${baseURL}/users`,{
+            method: "POST",
+            body: JSON.stringify(
+                {
+                    email: user.email,
+                    username: user.username,
+                    password: user.password,
+                    name:{
+                        firstname: user.firstname,
+                        lastname: user.lastname
+                    },
+                    address:{
+                        city: user.city,
+                        street: user.street,
+                        zipcode: user.zipcode,
+
+                    },
+                    phone: user.phone
+                }
+            )
+        })
+
+        const data = response.json();
+        return data;
+    }
+
+    catch(err){
+        console.error(err);
+    }
+}
