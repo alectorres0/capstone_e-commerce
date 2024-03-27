@@ -92,10 +92,35 @@ export async function addUser(user){
             )
         })
 
-        const data = response.json();
+        const data = await response.json();
         return data;
     }
 
+    catch(err){
+        console.error(err);
+    }
+}
+
+export async function userLogin(user){
+
+    try{
+        const response = await fetch(`${baseURL}/auth/login`,{
+            headers: {
+                'Content-Type': 'application/json',
+              },
+            method: 'POST',
+            body: JSON.stringify({
+                username: user.username,
+                password: user.password
+            })
+
+        })
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }   
+    
     catch(err){
         console.error(err);
     }
