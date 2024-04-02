@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import './App.css'
-import Home from './Components/Home'
-import Mens from './Components/Mens'
-import Womens from './Components/Womens'
-import Electronics from './Components/Electronics'
-import Jewelery from './Components/Jewelery'
-import Navbar from './Components/Navbar'
-import SingleItem from './Components/SingleItem'
-import Register from "./Components/Register"
-import Login from "./Components/Login"
+import Home from './components/Home'
+import Mens from './components/Mens'
+import Womens from './components/Womens'
+import Electronics from './components/Electronics'
+import Jewelery from './components/Jewelery'
+import Navbar from './components/Navbar'
+import SingleItem from './components/SingleItem'
+import Register from "./components/Register"
+import Login from "./components/Login"
 import {Routes, Route} from "react-router-dom"
 function App() {
   const [count, setCount] = useState(0)
