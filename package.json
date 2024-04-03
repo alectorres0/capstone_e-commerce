@@ -13,6 +13,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
+    "jsonb": "^0.1.0",
     "morgan": "^1.10.0",
     "pg": "^8.11.3",
     "uuid": "^9.0.1"
