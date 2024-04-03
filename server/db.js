@@ -1,14 +1,14 @@
 /*
 PURPOSE OF DB: 
-TO ADD USERS
+TO ADD USERS -
 TO BE ABLE TO LOGIN WITH USER INFORMATION
 RETURN TOKEN
 TO BE ABLE TO LOG OUT
-TO HOLD CARTS THAT ARE TIED TO USERS
+TO HOLD CARTS THAT ARE TIED TO USERS -
 TO BE ABLE TO CLEAR CARTS
-TO BE ABLE TO ADD TO CARTS
-TO BE ABLE TO SUBTRACT FROM CARTS
-TO BE ABLE TO UPDATE ITEMS IN CART
+TO BE ABLE TO ADD TO CARTS - 
+TO BE ABLE TO SUBTRACT FROM CARTS -
+TO BE ABLE TO UPDATE ITEMS IN CART -
 TO BE ABLE CHECK OUT 
 */
 
@@ -54,10 +54,23 @@ const response = await client.query(SQL, [uuid.v4(), email, username, await bcry
 return response.rows[0];
 
 }
+const getUser = async({userid}) =>{
+  const SQL = `
+  SELECT * FROM users WHERE id = $1
+  `;
+  const response = await client.query(SQL, [userid]);
+  return response.rows[0];
+}
+const authenticate = async({ userid, username, password})=> {
+    const user = await getUser({userid: userid});
+    if (!await bcrypt.compare(password, user.password)){
+      const error = new Error('Not authorized');
+    error.status = 401;
+    throw error;
+    }
 
-const authenticate = async({ username})=> {
     const SQL = `
-      SELECT id, username FROM users WHERE username=$1;
+      SELECT id, username FROM users WHERE username=$1
     `;
     const response = await client.query(SQL, [username]);
     if(!response.rows.length){
@@ -65,7 +78,9 @@ const authenticate = async({ username})=> {
       error.status = 401;
       throw error;
     }
-    return { token: response.rows[0].id };
+    const token = response.rows[0].id
+    console.log("Token: " + token);
+    return { token};
   };
 const createCart = async({userid}) =>{
     const SQL = `
@@ -77,21 +92,47 @@ const createCart = async({userid}) =>{
     //console.log("cart" + JSON.stringify(response.rows[0]));
     return response.rows[0];
 }
+
+const fetchCart = async({cartid}) =>{
+const SQL = `
+SELECT * FROM cart WHERE id = $1
+`;
+const response = await client.query(SQL, [cartid]);
+console.log("got cart: " + JSON.stringify(response.rows[0]))
+return response.rows[0];
+}
+
+const clearCart = async({cartid}) =>{
+let fetchedProducts = await fetchProducts({cartid: cartid});
+fetchedProducts = null;
+const SQL = `
+UPDATE cart
+SET products = $1
+WHERE id = $2
+RETURNING*
+`
+const response = await client.query(SQL,[fetchedProducts, cartid])
+console.log("deleted items from cart: " + JSON.stringify(response.rows[0]));
+return response.rows[0];
+}
 const addToCart = async({cartid, products}) =>{
-  const fetchedProducts = await fetchProducts({cartid: cartid});
-  console.log(fetchedProducts);
+  let fetchedProducts = await fetchProducts({cartid: cartid});
   if (!fetchedProducts) {
-    const SQL = `
-    UPDATE cart 
-    SET products = $1
-    WHERE id = $2
-    RETURNING *
-    `;
-    const response = await client.query(SQL, [JSON.stringify(products),cartid]);
-    //console.log("added items to cart: " + JSON.stringify(response.rows[0]))
-    return response.rows[0]
-  } else {
+    fetchedProducts = [products]
+  } 
+  else {
+    let found = false;
+      fetchedProducts.forEach((product)=>{
+        if(product.product_id === products.product_id){
+          product.quantity += products.quantity;
+          found = true;
+        }
+      })
+  
+  if (!found) {
   fetchedProducts.push(products);
+  }
+}
   const SQL = `
   UPDATE cart
   SET products = $1
@@ -101,7 +142,8 @@ const addToCart = async({cartid, products}) =>{
   const response = await client.query(SQL,[JSON.stringify(fetchedProducts),cartid]);
   //console.log("added item to cart: " + JSON.stringify(response.rows[0]));
   return response.rows[0];
-   }
+  
+   
 }
 const fetchProducts = async({cartid}) =>{
 const SQL = `
@@ -113,7 +155,43 @@ console.log("Fetched Products: " + JSON.stringify(data.products));
 return data.products;
 }
 
+const removeProduct = async({cartid, productid}) =>{
+const fetchedProducts = await fetchProducts({cartid: cartid});
+const filteredProducts = fetchedProducts.filter((product)=>{
+return product.product_id != productid;
 
+})
+
+const SQL = `
+UPDATE cart
+set PRODUCTS = $1
+WHERE id = $2
+RETURNING *
+`;
+
+const response = await client.query(SQL,[JSON.stringify(filteredProducts), cartid]);
+console.log("removed items: " + JSON.stringify(response.rows[0]));
+return response.rows[0];
+}
+
+const updateQuantity = async({cartid, productid, newQuantity}) =>{
+  const fetchedProducts = await fetchProducts({cartid: cartid});
+  fetchedProducts.forEach((product)=>{
+    if (product.product_id === productid){
+      product.quantity = newQuantity;
+    }
+  })
+  const SQL = `
+UPDATE cart
+set PRODUCTS = $1
+WHERE id = $2
+RETURNING *
+`;
+
+const response = await client.query(SQL,[JSON.stringify(fetchedProducts), cartid]);
+console.log("updated quantity" + JSON.stringify(response.rows[0]));
+return response.rows[0];
+}
 
 
 
@@ -128,9 +206,14 @@ module.exports = {
 client,
 createTables,
 createUser,
+getUser,
 createCart,
+fetchCart,
+clearCart,
 authenticate,
 fetchProducts,
-addToCart
+addToCart,
+removeProduct,
+updateQuantity
 
 }
