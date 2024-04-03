@@ -1,14 +1,14 @@
 /*
 PURPOSE OF DB: 
-TO ADD USERS
+TO ADD USERS -
 TO BE ABLE TO LOGIN WITH USER INFORMATION
 RETURN TOKEN
 TO BE ABLE TO LOG OUT
-TO HOLD CARTS THAT ARE TIED TO USERS
+TO HOLD CARTS THAT ARE TIED TO USERS -
 TO BE ABLE TO CLEAR CARTS
-TO BE ABLE TO ADD TO CARTS
-TO BE ABLE TO SUBTRACT FROM CARTS
-TO BE ABLE TO UPDATE ITEMS IN CART
+TO BE ABLE TO ADD TO CARTS - 
+TO BE ABLE TO SUBTRACT FROM CARTS -
+TO BE ABLE TO UPDATE ITEMS IN CART -
 TO BE ABLE CHECK OUT 
 */
 
@@ -77,6 +77,29 @@ const createCart = async({userid}) =>{
     //console.log("cart" + JSON.stringify(response.rows[0]));
     return response.rows[0];
 }
+
+const fetchCart = async({cartid}) =>{
+const SQL = `
+SELECT * FROM cart WHERE id = $1
+`;
+const response = await client.query(SQL, [cartid]);
+console.log("got cart: " + JSON.stringify(response.rows[0]))
+return response.rows[0];
+}
+
+const clearCart = async({cartid}) =>{
+let fetchedProducts = await fetchProducts({cartid: cartid});
+fetchedProducts = null;
+const SQL = `
+UPDATE cart
+SET products = $1
+WHERE id = $2
+RETURNING*
+`
+const response = await client.query(SQL,[fetchedProducts, cartid])
+console.log("deleted items from cart: " + JSON.stringify(response.rows[0]));
+return response.rows[0];
+}
 const addToCart = async({cartid, products}) =>{
   let fetchedProducts = await fetchProducts({cartid: cartid});
   if (!fetchedProducts) {
@@ -136,6 +159,24 @@ console.log("removed items: " + JSON.stringify(response.rows[0]));
 return response.rows[0];
 }
 
+const updateQuantity = async({cartid, productid, newQuantity}) =>{
+  const fetchedProducts = await fetchProducts({cartid: cartid});
+  fetchedProducts.forEach((product)=>{
+    if (product.product_id === productid){
+      product.quantity = newQuantity;
+    }
+  })
+  const SQL = `
+UPDATE cart
+set PRODUCTS = $1
+WHERE id = $2
+RETURNING *
+`;
+
+const response = await client.query(SQL,[JSON.stringify(fetchedProducts), cartid]);
+console.log("updated quantity" + JSON.stringify(response.rows[0]));
+return response.rows[0];
+}
 
 
 
@@ -151,9 +192,12 @@ client,
 createTables,
 createUser,
 createCart,
+fetchCart,
+clearCart,
 authenticate,
 fetchProducts,
 addToCart,
-removeProduct
+removeProduct,
+updateQuantity
 
 }
