@@ -16,8 +16,9 @@ console.log('tables created');
 
 const julie =  await createUser({email: 'julie@email.com', username: 'julie', password:'password', firstname: 'julie', lastname: 'torres', city:'losangeles', street: '4th', zipcode: '675893', phone:'909909909'});
 console.log('tables seeded')
-console.log("julie ID: " + julie.id)
+console.log("julie password: " + julie.password)
 
+await authenticate({userid: julie.id, username: julie.username, password: "password"})
 
 const cart = await createCart({userid: julie.id});
 console.log("cart created");

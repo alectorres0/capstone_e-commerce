@@ -54,10 +54,23 @@ const response = await client.query(SQL, [uuid.v4(), email, username, await bcry
 return response.rows[0];
 
 }
+const getUser = async({userid}) =>{
+  const SQL = `
+  SELECT * FROM users WHERE id = $1
+  `;
+  const response = await client.query(SQL, [userid]);
+  return response.rows[0];
+}
+const authenticate = async({ userid, username, password})=> {
+    const user = await getUser({userid: userid});
+    if (!await bcrypt.compare(password, user.password)){
+      const error = new Error('Not authorized');
+    error.status = 401;
+    throw error;
+    }
 
-const authenticate = async({ username})=> {
     const SQL = `
-      SELECT id, username FROM users WHERE username=$1;
+      SELECT id, username FROM users WHERE username=$1
     `;
     const response = await client.query(SQL, [username]);
     if(!response.rows.length){
@@ -65,7 +78,9 @@ const authenticate = async({ username})=> {
       error.status = 401;
       throw error;
     }
-    return { token: response.rows[0].id };
+    const token = response.rows[0].id
+    console.log("Token: " + token);
+    return { token};
   };
 const createCart = async({userid}) =>{
     const SQL = `
@@ -191,6 +206,7 @@ module.exports = {
 client,
 createTables,
 createUser,
+getUser,
 createCart,
 fetchCart,
 clearCart,
