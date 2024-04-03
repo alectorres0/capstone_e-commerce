@@ -78,20 +78,23 @@ const createCart = async({userid}) =>{
     return response.rows[0];
 }
 const addToCart = async({cartid, products}) =>{
-  const fetchedProducts = await fetchProducts({cartid: cartid});
-  console.log(fetchedProducts);
+  let fetchedProducts = await fetchProducts({cartid: cartid});
   if (!fetchedProducts) {
-    const SQL = `
-    UPDATE cart 
-    SET products = $1
-    WHERE id = $2
-    RETURNING *
-    `;
-    const response = await client.query(SQL, [JSON.stringify(products),cartid]);
-    //console.log("added items to cart: " + JSON.stringify(response.rows[0]))
-    return response.rows[0]
-  } else {
+    fetchedProducts = [products]
+  } 
+  else {
+    let found = false;
+      fetchedProducts.forEach((product)=>{
+        if(product.product_id === products.product_id){
+          product.quantity += products.quantity;
+          found = true;
+        }
+      })
+  
+  if (!found) {
   fetchedProducts.push(products);
+  }
+}
   const SQL = `
   UPDATE cart
   SET products = $1
@@ -101,7 +104,8 @@ const addToCart = async({cartid, products}) =>{
   const response = await client.query(SQL,[JSON.stringify(fetchedProducts),cartid]);
   //console.log("added item to cart: " + JSON.stringify(response.rows[0]));
   return response.rows[0];
-   }
+  
+   
 }
 const fetchProducts = async({cartid}) =>{
 const SQL = `
@@ -113,6 +117,24 @@ console.log("Fetched Products: " + JSON.stringify(data.products));
 return data.products;
 }
 
+const removeProduct = async({cartid, productid}) =>{
+const fetchedProducts = await fetchProducts({cartid: cartid});
+const filteredProducts = fetchedProducts.filter((product)=>{
+return product.product_id != productid;
+
+})
+
+const SQL = `
+UPDATE cart
+set PRODUCTS = $1
+WHERE id = $2
+RETURNING *
+`;
+
+const response = await client.query(SQL,[JSON.stringify(filteredProducts), cartid]);
+console.log("removed items: " + JSON.stringify(response.rows[0]));
+return response.rows[0];
+}
 
 
 
@@ -131,6 +153,7 @@ createUser,
 createCart,
 authenticate,
 fetchProducts,
-addToCart
+addToCart,
+removeProduct
 
 }

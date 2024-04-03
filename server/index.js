@@ -1,4 +1,4 @@
-const {client,createTables,createUser,createCart,authenticate,fetchProducts, addToCart} = require('./db');
+const {client,createTables,createUser,createCart,authenticate,fetchProducts, addToCart, removeProduct} = require('./db');
 
 const express = require('express');
 const app = express();
@@ -21,12 +21,16 @@ console.log("julie ID: " + julie.id)
 
 const cart = await createCart({userid: julie.id});
 console.log("cart created");
-await addToCart({cartid: cart.id, products:[{product_id: 4, quantity:3},{product_id:3, quantity:2}]})
+await addToCart({cartid: cart.id, products:{product_id: 4, quantity:3}})
 console.log("first time adding to cart ^")
 await addToCart({cartid: cart.id, products:{product_id: 69, quantity:1}})
+await addToCart({cartid: cart.id, products:{product_id: 69, quantity:1}})
+
 console.log("second time");
 await fetchProducts({cartid: cart.id});
 console.log("products fetched");
+
+await removeProduct({cartid: cart.id, productid:4})
 app.listen(port, ()=>console.log(`listening on port ${port}`));
 
 }
