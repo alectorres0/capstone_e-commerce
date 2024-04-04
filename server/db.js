@@ -17,6 +17,7 @@ const pg = require('pg');
 const client = new pg.Client('postgres://localhost/The_Best_Store');
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const createTables = async() =>{
 const SQL = `
@@ -61,6 +62,7 @@ const getUser = async({userid}) =>{
   const response = await client.query(SQL, [userid]);
   return response.rows[0];
 }
+const secret = '1234onetwothreefour567fivesixseven';
 const authenticate = async({ userid, username, password})=> {
     const user = await getUser({userid: userid});
     if (!await bcrypt.compare(password, user.password)){
@@ -78,10 +80,28 @@ const authenticate = async({ userid, username, password})=> {
       error.status = 401;
       throw error;
     }
-    const token = response.rows[0].id
+    const userID = response.rows[0].id
+   
+    const token = jwt.sign(userID, secret );
     console.log("Token: " + token);
-    return { token};
+    return token;
   };
+
+  const verifyToken = async(token) =>{
+    const decodedToken = jwt.verify(token,secret);
+    console.log("decoded token: " + decodedToken);
+    const SQL = `
+    SELECT id FROM users WHERE id = $1
+    
+    `;
+    const response = await client.query(SQL, [decodedToken]);
+    if(!response.rows.length){
+      const error = Error('not authorized');
+      error.status = 401;
+      throw error;
+    }
+    return response.rows[0].id;
+  }
 const createCart = async({userid}) =>{
     const SQL = `
     INSERT INTO cart(id, user_id)
@@ -98,7 +118,7 @@ const SQL = `
 SELECT * FROM cart WHERE id = $1
 `;
 const response = await client.query(SQL, [cartid]);
-console.log("got cart: " + JSON.stringify(response.rows[0]))
+//console.log("got cart: " + JSON.stringify(response.rows[0]))
 return response.rows[0];
 }
 
@@ -112,7 +132,7 @@ WHERE id = $2
 RETURNING*
 `
 const response = await client.query(SQL,[fetchedProducts, cartid])
-console.log("deleted items from cart: " + JSON.stringify(response.rows[0]));
+//console.log("deleted items from cart: " + JSON.stringify(response.rows[0]));
 return response.rows[0];
 }
 const addToCart = async({cartid, products}) =>{
@@ -170,7 +190,7 @@ RETURNING *
 `;
 
 const response = await client.query(SQL,[JSON.stringify(filteredProducts), cartid]);
-console.log("removed items: " + JSON.stringify(response.rows[0]));
+//console.log("removed items: " + JSON.stringify(response.rows[0]));
 return response.rows[0];
 }
 
@@ -189,7 +209,7 @@ RETURNING *
 `;
 
 const response = await client.query(SQL,[JSON.stringify(fetchedProducts), cartid]);
-console.log("updated quantity" + JSON.stringify(response.rows[0]));
+//console.log("updated quantity" + JSON.stringify(response.rows[0]));
 return response.rows[0];
 }
 
@@ -214,6 +234,7 @@ authenticate,
 fetchProducts,
 addToCart,
 removeProduct,
-updateQuantity
+updateQuantity,
+verifyToken
 
 }
