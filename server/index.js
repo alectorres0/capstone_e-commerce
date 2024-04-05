@@ -1,11 +1,11 @@
 const {client,createTables,createUser,createCart,verifyToken,fetchCart,clearCart,authenticate,fetchProducts, addToCart, removeProduct, updateQuantity,getUser} = require('./db');
 
 const express = require('express');
-
+const cors = require('cors');
 const app = express();
 app.use(express.json());
 app.use(require('morgan')('dev'));
-
+app.use(cors());
 
 const authenticateToken = async(req,res,next) =>{
 const token = req.headers.authorization;
@@ -125,27 +125,27 @@ console.log('connected to database');
 await createTables();
 console.log('tables created');
 
-const julie =  await createUser({email: 'julie@email.com', username: 'julie', password:'password', firstname: 'julie', lastname: 'torres', city:'losangeles', street: '4th', zipcode: '675893', phone:'909909909'});
-console.log('tables seeded')
-console.log("julie ID: " + julie.id)
+// const julie =  await createUser({email: 'julie@email.com', username: 'julie', password:'password', firstname: 'julie', lastname: 'torres', city:'losangeles', street: '4th', zipcode: '675893', phone:'909909909'});
+// console.log('tables seeded')
+// console.log("julie ID: " + julie.data.id)
 
-const token = await authenticate({username: julie.username, password: "password"})
-await verifyToken(token);
-const cart = await createCart({userid: julie.id});
-//console.log("cart created");
-await addToCart({cartid: cart.id, products:{product_id: 4, quantity:3}})
-//console.log("first time adding to cart ^")
-await addToCart({cartid: cart.id, products:{product_id: 69, quantity:1}})
-await addToCart({cartid: cart.id, products:{product_id: 69, quantity:1}})
-await fetchCart({cartid: cart.id});
-//console.log("second time");
-await fetchProducts({cartid: cart.id});
-//console.log("products fetched");
+// const token = await authenticate({username: julie.data.username, password: "password"})
+// await verifyToken(token);
+// const cart = await createCart({userid: julie.data.id});
+// //console.log("cart created");
+// await addToCart({cartid: cart.id, products:{product_id: 4, quantity:3}})
+// //console.log("first time adding to cart ^")
+// await addToCart({cartid: cart.id, products:{product_id: 69, quantity:1}})
+// await addToCart({cartid: cart.id, products:{product_id: 69, quantity:1}})
+// await fetchCart({cartid: cart.id});
+// //console.log("second time");
+// await fetchProducts({cartid: cart.id});
+// //console.log("products fetched");
 
-await removeProduct({cartid: cart.id, productid:4})
+// await removeProduct({cartid: cart.id, productid:4})
 
-await updateQuantity({cartid: cart.id,productid: 69, newQuantity: 500})
-await clearCart({cartid: cart.id});
+// await updateQuantity({cartid: cart.id,productid: 69, newQuantity: 500})
+// await clearCart({cartid: cart.id});
 app.listen(port, ()=>console.log(`listening on port ${port}`));
 
 }
