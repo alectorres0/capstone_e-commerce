@@ -6,7 +6,6 @@ const [user,setUser] = useState({username: "",password: ""})
 
 const handleSubmit = async(e) =>{
     e.preventDefault();
-    console.log(user.username);
     const data = await userLogin(user);
     console.log(data);
 }

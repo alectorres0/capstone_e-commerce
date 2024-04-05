@@ -102,7 +102,7 @@ export async function addUser(user){
 export async function userLogin(user){
 
     try{
-        const response = await fetch(`${baseURL}/auth/login`,{
+        const response = await fetch('http://localhost:3000/api/auth/login',{
             headers: {
                 'Content-Type': 'application/json',
               },
@@ -114,7 +114,7 @@ export async function userLogin(user){
 
         })
 
-        const data = await response.json();
+        const data = await response.text();
         console.log(data);
         return data;
     }   
