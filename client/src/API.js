@@ -70,23 +70,21 @@ export async function getItem(id){
 export async function addUser(user){
 
     try{
-        const response = await fetch(`${baseURL}/users`,{
+        const response = await fetch('http://localhost:3000/api/register',{
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(
                 {
                     email: user.email,
                     username: user.username,
                     password: user.password,
-                    name:{
                         firstname: user.firstname,
-                        lastname: user.lastname
-                    },
-                    address:{
+                        lastname: user.lastname,
                         city: user.city,
                         street: user.street,
                         zipcode: user.zipcode,
-
-                    },
                     phone: user.phone
                 }
             )

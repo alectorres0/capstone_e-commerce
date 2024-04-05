@@ -62,7 +62,8 @@ RETURNING *
 `;
 const response = await client.query(SQL, [uuid.v4(), email, username, await bcrypt.hash(password,5),firstname,lastname,city,street,zipcode,phone]);
 //console.log("user" + JSON.stringify(response.rows[0]));
-return response.rows[0];
+const token = jwt.sign(response.rows[0].id, secret );
+return {data: response.rows[0], token: token}
 
 }
 const getUser = async({username}) =>{
