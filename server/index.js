@@ -1,4 +1,4 @@
-const {client,createTables,createUser,createCart,verifyToken,fetchCart,clearCart,authenticate,fetchProducts, addToCart, removeProduct, updateQuantity} = require('./db');
+const {client,createTables,createUser,createCart,verifyToken,fetchCart,clearCart,authenticate,fetchProducts, addToCart, removeProduct, updateQuantity,getUser} = require('./db');
 
 const express = require('express');
 
@@ -40,7 +40,7 @@ app.post('/api/register',async(req,res,next)=>{
 
 app.post('/api/auth/login', async(req, res, next)=> {
     try {
-      res.send(await authenticate({userid: req.body.userid, username: req.body.username, password: req.body.password}));
+      res.send(await authenticate({username: req.body.username, password: req.body.password}));
     }
     catch(ex){
       next(ex);
@@ -58,7 +58,64 @@ app.post('/api/cart',authenticateToken, async(req,res,next)=>{     try{
     }
  })
 
+ app.get('/api/cart',authenticateToken, async(req,res,next)=>{
+  try{
+  res.send(await fetchCart({cartid: req.body.cartid}))
+  }
+  catch(err){
+    next(err);
+  }
+ })
 
+ app.put('/api/cart/product',authenticateToken, async(req,res,next)=>{
+  try{
+    res.send(await addToCart({cartid: req.body.cartid, products: req.body.products}))
+  }
+
+  catch(err){
+    next(err);
+  }
+ })
+
+ app.put('/api/cart/quantity',authenticateToken, async(req,res,next)=>{
+  try{
+    res.send(await updateQuantity({cartid: req.body.cartid, productid: req.body.productid, newQuantity: req.body.newQuantity}))
+  }
+
+  catch(err){
+    next(err);
+  }
+ })
+
+ app.get('/api/user',authenticateToken, async(req,res,next)=>{
+  try{
+    res.send(await getUser({username: req.body.username}))
+  }
+
+  catch(err){
+    next(err);
+  }
+ })
+
+ app.put('/api/cart/remove',authenticateToken, async(req,res,next)=>{
+  try{
+    res.send(await removeProduct({cartid: req.body.cartid, productid: req.body.productid}))
+  }
+
+  catch(err){
+    next(err);
+  }
+ })
+
+ app.put('/api/cart/clear',authenticateToken, async(req,res,next)=>{
+  try{
+    res.send(await clearCart({cartid: req.body.cartid}))
+  }
+
+  catch(err){
+    next(err);
+  }
+ })
 
 const init = async() =>{
 const port = process.env.PORT || 3000;
@@ -72,7 +129,7 @@ const julie =  await createUser({email: 'julie@email.com', username: 'julie', pa
 console.log('tables seeded')
 console.log("julie ID: " + julie.id)
 
-const token = await authenticate({userid: julie.id, username: julie.username, password: "password"})
+const token = await authenticate({username: julie.username, password: "password"})
 await verifyToken(token);
 const cart = await createCart({userid: julie.id});
 //console.log("cart created");

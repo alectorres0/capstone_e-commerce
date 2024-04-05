@@ -21,25 +21,35 @@ const jwt = require('jsonwebtoken');
 
 const createTables = async() =>{
 const SQL = `
-DROP TABLE IF EXISTS cart;
-DROP TABLE IF EXISTS users;
-CREATE TABLE users(
-id UUID PRIMARY KEY,
-email VARCHAR(255) UNIQUE NOT NULL,
-username VARCHAR(255) NOT NULL,
-password VARCHAR(255) NOT NULL,
-firstname VARCHAR(255) NOT NULL,
-lastname VARCHAR(255) NOT NULL,
-city VARCHAR(255) NOT NULL,
-street VARCHAR(255) NOT NULL,
-zipcode VARCHAR(255) NOT NULL,
-phone VARCHAR(255) NOT NULL
-);
-CREATE TABLE cart(
-id UUID PRIMARY KEY,
-user_id UUID REFERENCES users(id) NOT NULL,
-products JSON 
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'users') THEN
+        CREATE TABLE users(
+            id UUID PRIMARY KEY,
+            email VARCHAR(255) NOT NULL,
+            username VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            firstname VARCHAR(255) NOT NULL,
+            lastname VARCHAR(255) NOT NULL,
+            city VARCHAR(255) NOT NULL,
+            street VARCHAR(255) NOT NULL,
+            zipcode VARCHAR(255) NOT NULL,
+            phone VARCHAR(255) NOT NULL
+        );
+    END IF;
+END $$;
+
+-- Check if the cart table exists
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'cart') THEN
+        CREATE TABLE cart(
+            id UUID PRIMARY KEY,
+            user_id UUID REFERENCES users(id) NOT NULL,
+            products JSON 
+        );
+    END IF;
+END $$;
 `;
 await client.query(SQL);
 };
@@ -55,16 +65,22 @@ const response = await client.query(SQL, [uuid.v4(), email, username, await bcry
 return response.rows[0];
 
 }
-const getUser = async({userid}) =>{
+const getUser = async({username}) =>{
   const SQL = `
-  SELECT * FROM users WHERE id = $1
+  SELECT * FROM users WHERE username = $1
   `;
-  const response = await client.query(SQL, [userid]);
+  
+  const response = await client.query(SQL, [username]);
+  if(!response.rows.length){
+    const error = Error("wrong username");
+    error.status = 401;
+    throw error;
+  }
   return response.rows[0];
 }
 const secret = '1234onetwothreefour567fivesixseven';
-const authenticate = async({ userid, username, password})=> {
-    const user = await getUser({userid: userid});
+const authenticate = async({username, password})=> {
+    const user = await getUser({username: username});
     if (!await bcrypt.compare(password, user.password)){
       const error = new Error('Not authorized');
     error.status = 401;
@@ -118,7 +134,7 @@ const SQL = `
 SELECT * FROM cart WHERE id = $1
 `;
 const response = await client.query(SQL, [cartid]);
-//console.log("got cart: " + JSON.stringify(response.rows[0]))
+console.log("got cart: " + JSON.stringify(response.rows[0]))
 return response.rows[0];
 }
 
