@@ -73,7 +73,7 @@ const getUser = async({username}) =>{
   
   const response = await client.query(SQL, [username]);
   if(!response.rows.length){
-    const error = Error("wrong username");
+    const error = Error("wrong id");
     error.status = 401;
     throw error;
   }

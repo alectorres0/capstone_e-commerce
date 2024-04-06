@@ -1,6 +1,6 @@
 import {addUser, createCart} from "../API"
 import {useState} from "react"
-const Register = ({cartId, setCartId}) =>{
+const Register = ({cartId, setCartId, token, setToken,userId, setUserId}) =>{
 const [user, setUser] = useState({email: "", username: "", password: "", firstname: "", lastname: "", city: "",
 street: "", zipcode: "", phone: ""
 });
@@ -9,6 +9,8 @@ const handleSubmit = async(e) =>{
     const addedUser = await addUser(user);
     const cart = await createCart({userid: addedUser.user.id, token: addedUser.token});
     setCartId(cart.id);
+    setToken(addedUser.token);
+    setUserId(addedUser.user.id);
     console.log(addedUser);
 }
 

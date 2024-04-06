@@ -173,3 +173,28 @@ export async function fetchCart({userid, token}){
     }
 
 }
+
+export async function addToCart({cartid, products, token}){
+    try{
+        const response = await fetch(`${myURL}/api/cart/product`,{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization':token
+            },
+            body: JSON.stringify({
+                cartid: cartid,
+                products:products
+            })
+        })
+        const data = await response.json();
+        console.log("added To cart" + JSON.stringify(data));
+        return data
+    }
+
+    catch(err){
+
+        console.error("error adding to cart" + err);
+    }
+
+}
