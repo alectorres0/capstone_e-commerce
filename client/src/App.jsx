@@ -26,7 +26,7 @@ function App() {
       <Route path = "/jewelery" element = {<Jewelery/>}/>
       <Route path = "/item/:name/:id" element = {<SingleItem />}/>
       <Route path = "/register" element = {<Register cartId = {cartId} setCartId = {setCartId}/>}/>
-      <Route path = "/login" element = {<Login/>}/>
+      <Route path = "/login" element = {<Login cartId = {cartId} setCartId = {setCartId}/>}/>
     </Routes>
     
    </>

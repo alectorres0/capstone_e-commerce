@@ -60,7 +60,7 @@ app.post('/api/cart',authenticateToken, async(req,res,next)=>{     try{
 
  app.get('/api/cart',authenticateToken, async(req,res,next)=>{
   try{
-  res.send(await fetchCart({cartid: req.body.cartid}))
+  res.send(await fetchCart({userid: req.body.userid}))
   }
   catch(err){
     next(err);

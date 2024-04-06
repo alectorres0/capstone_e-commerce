@@ -114,8 +114,8 @@ export async function userLogin(user){
 
         })
 
-        const data = await response.text();
-        console.log(data);
+        const data = await response.json();
+        console.log(JSON.stringify(data));
         return data;
     }   
     
@@ -146,5 +146,30 @@ catch(err){
 
     console.error("error creating cart" + err);
 }
+
+}
+
+export async function fetchCart({userid, token}){
+
+    try{
+        const response = await fetch(`${myURL}/api/cart`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization':token
+            },
+            body: JSON.stringify({
+                userid: userid
+            })
+        })
+        const data = await response.json();
+        console.log("cart fetched " + JSON.stringify(data));
+        return data
+    }
+
+    catch(err){
+
+        console.error("error fetching cart" + err);
+    }
 
 }

@@ -7,9 +7,9 @@ street: "", zipcode: "", phone: ""
 const handleSubmit = async(e) =>{
     e.preventDefault();
     const addedUser = await addUser(user);
-    const cart = await createCart({userid: addedUser.data.id, token: addedUser.token});
+    const cart = await createCart({userid: addedUser.user.id, token: addedUser.token});
     setCartId(cart.id);
-    console.log(addedUser.token);
+    console.log(addedUser);
 }
 
 const handleChange = (e) => {
