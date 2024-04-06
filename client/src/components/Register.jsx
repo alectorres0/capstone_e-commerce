@@ -1,4 +1,4 @@
-import {addUser} from "../API"
+import {addUser, createCart} from "../API"
 import {useState} from "react"
 const Register = () =>{
 const [user, setUser] = useState({email: "", username: "", password: "", firstname: "", lastname: "", city: "",
@@ -6,8 +6,9 @@ street: "", zipcode: "", phone: ""
 });
 const handleSubmit = async(e) =>{
     e.preventDefault();
-    const data = await addUser(user);
-    console.log(data);
+    const addedUser = await addUser(user);
+    await createCart({userid: addedUser.data.id, token: addedUser.token})
+    console.log(addedUser.token);
 }
 
 const handleChange = (e) => {
