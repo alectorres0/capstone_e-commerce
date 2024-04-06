@@ -9,22 +9,26 @@ import Navbar from './components/Navbar'
 import SingleItem from './components/SingleItem'
 import Register from "./components/Register"
 import Login from "./components/Login"
+import Cart from "./components/Cart"
 import {Routes, Route} from "react-router-dom"
 function App() {
-  const [count, setCount] = useState(0)
+  const [cartId,setCartId] = useState(null);
+  const [token, setToken] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   return (
     <>
     <Navbar/>
+    { cartId && <Cart />}
     <Routes>
       <Route path = "*" element = {<Home/>}/>
       <Route path = "/men's clothing" element = {<Mens/>}/>
       <Route path = "/women's clothing" element = {<Womens/>}/>
       <Route path = "/electronics" element = {<Electronics/>}/>
       <Route path = "/jewelery" element = {<Jewelery/>}/>
-      <Route path = "/item/:name/:id" element = {<SingleItem />}/>
-      <Route path = "/register" element = {<Register />}/>
-      <Route path = "/login" element = {<Login/>}/>
+      <Route path = "/item/:name/:id" element = {<SingleItem token = {token} setToken = {setToken} userId = {userId}/>}/>
+      <Route path = "/register" element = {<Register cartId = {cartId} setCartId = {setCartId} token = {token} setToken = {setToken} userId = {userId} setUserId = {setUserId}/>}/>
+      <Route path = "/login" element = {<Login cartId = {cartId} setCartId = {setCartId} token = {token} setToken = {setToken} userId = {userId} setUserId = {setUserId}/>}/>
     </Routes>
     
    </>

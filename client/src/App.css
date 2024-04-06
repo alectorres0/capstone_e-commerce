@@ -17,6 +17,13 @@ border-right: solid black;
     display:flex;
     
 }
+.quantity{
+    display:flex;
+}
+.quantity>select{
+    margin:10px;
+    width:50px;
+}
 .itemDescription{
 width: 400px;
 padding-left: 30px;

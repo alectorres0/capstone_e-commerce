@@ -63,7 +63,7 @@ RETURNING *
 const response = await client.query(SQL, [uuid.v4(), email, username, await bcrypt.hash(password,5),firstname,lastname,city,street,zipcode,phone]);
 //console.log("user" + JSON.stringify(response.rows[0]));
 const token = jwt.sign(response.rows[0].id, secret );
-return {data: response.rows[0], token: token}
+return {user: response.rows[0], token: token}
 
 }
 const getUser = async({username}) =>{
@@ -73,7 +73,7 @@ const getUser = async({username}) =>{
   
   const response = await client.query(SQL, [username]);
   if(!response.rows.length){
-    const error = Error("wrong username");
+    const error = Error("wrong id");
     error.status = 401;
     throw error;
   }
@@ -101,7 +101,7 @@ const authenticate = async({username, password})=> {
    
     const token = jwt.sign(userID, secret );
     console.log("Token: " + token);
-    return token;
+    return {user: response.rows[0],token: token};
   };
 
   const verifyToken = async(token) =>{
@@ -130,11 +130,11 @@ const createCart = async({userid}) =>{
     return response.rows[0];
 }
 
-const fetchCart = async({cartid}) =>{
+const fetchCart = async({userid}) =>{
 const SQL = `
-SELECT * FROM cart WHERE id = $1
+SELECT * FROM cart WHERE user_id = $1
 `;
-const response = await client.query(SQL, [cartid]);
+const response = await client.query(SQL, [userid]);
 console.log("got cart: " + JSON.stringify(response.rows[0]))
 return response.rows[0];
 }

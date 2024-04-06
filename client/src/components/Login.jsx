@@ -1,12 +1,16 @@
 import {useState} from 'react'
-import {userLogin} from '../API'
+import {userLogin, fetchCart} from '../API'
 
-const Login = () =>{
+const Login = ({cartId, setCartId,token,setToken,userId, setUserId}) =>{
 const [user,setUser] = useState({username: "",password: ""})
 
 const handleSubmit = async(e) =>{
     e.preventDefault();
     const data = await userLogin(user);
+    const cart = await fetchCart({userid: data.user.id, token: data.token});
+    setCartId(cart.id);
+    setToken(data.token);
+    setUserId(data.user.id);
     console.log(data);
 }
 
