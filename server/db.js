@@ -130,11 +130,11 @@ const createCart = async({userid}) =>{
     return response.rows[0];
 }
 
-const fetchCart = async({cartid}) =>{
+const fetchCart = async({userid}) =>{
 const SQL = `
-SELECT * FROM cart WHERE id = $1
+SELECT * FROM cart WHERE user_id = $1
 `;
-const response = await client.query(SQL, [cartid]);
+const response = await client.query(SQL, [userid]);
 console.log("got cart: " + JSON.stringify(response.rows[0]))
 return response.rows[0];
 }

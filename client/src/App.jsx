@@ -9,13 +9,15 @@ import Navbar from './components/Navbar'
 import SingleItem from './components/SingleItem'
 import Register from "./components/Register"
 import Login from "./components/Login"
+import Cart from "./components/Cart"
 import {Routes, Route} from "react-router-dom"
 function App() {
-  const [count, setCount] = useState(0)
+  const [cartId,setCartId] = useState(null);
 
   return (
     <>
     <Navbar/>
+    { cartId && <Cart />}
     <Routes>
       <Route path = "*" element = {<Home/>}/>
       <Route path = "/men's clothing" element = {<Mens/>}/>
@@ -23,7 +25,7 @@ function App() {
       <Route path = "/electronics" element = {<Electronics/>}/>
       <Route path = "/jewelery" element = {<Jewelery/>}/>
       <Route path = "/item/:name/:id" element = {<SingleItem />}/>
-      <Route path = "/register" element = {<Register />}/>
+      <Route path = "/register" element = {<Register cartId = {cartId} setCartId = {setCartId}/>}/>
       <Route path = "/login" element = {<Login/>}/>
     </Routes>
     
