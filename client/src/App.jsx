@@ -15,18 +15,20 @@ function App() {
   const [cartId,setCartId] = useState(null);
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [cartQuantity, setCartQuantity] = useState(0);
+
 
   return (
     <>
     <Navbar/>
-    { cartId && <Cart />}
+    { cartId && <Cart cartQuantity = {cartQuantity} setCartQuantity={setCartQuantity} userId = {userId} token = {token}/>}
     <Routes>
       <Route path = "*" element = {<Home/>}/>
       <Route path = "/men's clothing" element = {<Mens/>}/>
       <Route path = "/women's clothing" element = {<Womens/>}/>
       <Route path = "/electronics" element = {<Electronics/>}/>
       <Route path = "/jewelery" element = {<Jewelery/>}/>
-      <Route path = "/item/:name/:id" element = {<SingleItem token = {token} setToken = {setToken} userId = {userId}/>}/>
+      <Route path = "/item/:name/:id" element = {<SingleItem token = {token} setToken = {setToken} userId = {userId} cartQuantity = {cartQuantity} setCartQuantity = {setCartQuantity}/>}/>
       <Route path = "/register" element = {<Register cartId = {cartId} setCartId = {setCartId} token = {token} setToken = {setToken} userId = {userId} setUserId = {setUserId}/>}/>
       <Route path = "/login" element = {<Login cartId = {cartId} setCartId = {setCartId} token = {token} setToken = {setToken} userId = {userId} setUserId = {setUserId}/>}/>
     </Routes>

@@ -43,3 +43,16 @@ border: 2px solid lightgray;
 border-radius: 25px;
 padding: 20px;
 }
+.cart{
+    position: fixed;
+    top:0;
+    right:0;
+}
+.cart>svg{
+    width: 50px;
+    height: 50px;
+    
+}
+.cart>span{
+    margin-right: 5px;
+}
