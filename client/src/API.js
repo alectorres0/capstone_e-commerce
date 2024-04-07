@@ -152,15 +152,10 @@ catch(err){
 export async function fetchCart({userid, token}){
 
     try{
-        const response = await fetch(`${myURL}/api/cart`,{
-            method: 'POST',
+        const response = await fetch(`${myURL}/api/cart/${userid}`,{
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization':token
-            },
-            body: JSON.stringify({
-                userid: userid
-            })
+            }
         })
         const data = await response.json();
         console.log("cart fetched " + JSON.stringify(data));

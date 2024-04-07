@@ -58,9 +58,9 @@ app.post('/api/cart',authenticateToken, async(req,res,next)=>{     try{
     }
  })
 
- app.get('/api/cart',authenticateToken, async(req,res,next)=>{
+ app.get('/api/cart/:userid',authenticateToken, async(req,res,next)=>{
   try{
-  res.send(await fetchCart({userid: req.body.userid}))
+  res.send(await fetchCart({userid: req.params.userid}))
   }
   catch(err){
     next(err);
@@ -87,7 +87,7 @@ app.post('/api/cart',authenticateToken, async(req,res,next)=>{     try{
   }
  })
 
- app.get('/api/user',authenticateToken, async(req,res,next)=>{
+ app.get('/api/user/:username',authenticateToken, async(req,res,next)=>{
   try{
     res.send(await getUser({username: req.body.id}))
   }

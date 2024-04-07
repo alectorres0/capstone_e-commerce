@@ -132,11 +132,19 @@ const createCart = async({userid}) =>{
 
 const fetchCart = async({userid}) =>{
 const SQL = `
-SELECT * FROM cart WHERE user_id = $1
+SELECT id FROM cart WHERE user_id = $1
 `;
 const response = await client.query(SQL, [userid]);
-console.log("got cart: " + JSON.stringify(response.rows[0]))
-return response.rows[0];
+if (response.rows.length === 0) {
+  throw new Error("Cart not found for the user");
+}
+
+const realCart = `
+SELECT * FROM cart WHERE id = $1
+`;
+const realCartResponse = await client.query(realCart, [response.rows[0].id]);
+console.log("real cart: " + JSON.stringify(realCartResponse.rows[0]));
+return realCartResponse.rows[0];
 }
 
 const clearCart = async({cartid}) =>{
@@ -155,20 +163,22 @@ return response.rows[0];
 const addToCart = async({cartid, products}) =>{
   let fetchedProducts = await fetchProducts({cartid: cartid});
   if (!fetchedProducts) {
-    fetchedProducts = [products]
+    fetchedProducts = []
   } 
-  else {
+  
     let found = false;
       fetchedProducts.forEach((product)=>{
         if(product.product_id === products.product_id){
-          product.quantity += products.quantity;
+
+          let addedQuantity = parseInt(products.quantity) + parseInt(product.quantity);
+          product.quantity = addedQuantity.toString();
           found = true;
         }
       })
   
   if (!found) {
   fetchedProducts.push(products);
-  }
+  
 }
   const SQL = `
   UPDATE cart

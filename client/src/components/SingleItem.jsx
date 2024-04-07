@@ -1,7 +1,7 @@
 import {useParams, Link, useNavigate} from "react-router-dom"
 import {getItem, addToCart, fetchCart} from "../API"
 import {useState, useEffect} from "react"
-const SingleItem = ({token, setToken,userId}) =>{
+const SingleItem = ({token, setToken,userId,cartQuantity, setCartQuantity}) =>{
 const {id} = useParams();
 const [data, setData] = useState({});
 const navigate = useNavigate();
@@ -27,6 +27,7 @@ const handleCheckOut = async(e) =>{
     const selectedQuantity = quantityElement.value;
     const product = {product_id: data.id, quantity: selectedQuantity}
     const addedItem = await addToCart({cartid: cart.id, products: product, token:token});
+    setCartQuantity(cartQuantity+=parseInt(selectedQuantity))
     console.log(addedItem);
     }
 }
@@ -53,7 +54,7 @@ return(
         <option value = "9">9</option>
         <option value = "10">10</option>
     </select>
-    <button onClick = {(e) => {handleCheckOut(e)}}>checkout</button>
+    <button onClick = {(e) => {handleCheckOut(e)}}>Add to Cart</button>
 </div>
 </div>
 </div>
