@@ -1,17 +1,25 @@
 .itemcard{
     border-style:solid;
     border-color: black;
+    border-radius: 10px;
     height:100px;
     margin: 20px;
     display: flex;
+    box-shadow: -6px -6px 10px #f9f9f9,
+                6px 6px 10px #00000026;
 }
 
-
+.itemcard:hover{
+    box-shadow: 2px 2px 20px #f9f9f9,
+                -2px -2px 20px #00000026;
+}
 
 .itemcard>img{
 height:100px;
 width: 100px;
 border-right: solid black;
+margin-left: 5px;
+margin-right: 10px;
 }
 .singleItem{
     display:flex;
