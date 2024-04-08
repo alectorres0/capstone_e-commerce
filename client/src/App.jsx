@@ -23,6 +23,7 @@ function App() {
 
   return (
     <>
+    <h1 style = {{fontSize: '70px'}}>THE BEST STORE</h1>
     <Navbar/>
     <AccountSymbol token = {token}/>
     { cartId && <Cart cartQuantity = {cartQuantity} setCartQuantity={setCartQuantity} userId = {userId} token = {token}/>}

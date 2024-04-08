@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {Link} from 'react-router-dom'
 import {userLogin, fetchCart} from '../API'
 
 const Login = ({cartId, setCartId,token,setToken,userId, setUserId, setUserInfo}) =>{
@@ -24,6 +25,7 @@ const handleChange = (e) => {
     }));
   };
 return(
+  <div>
     <form onSubmit = {handleSubmit}>
         <label>
             Username:
@@ -36,6 +38,8 @@ return(
         <button type = "submit">Submit</button>
         </form>
 
+        <p>Don't have an account? <Link to = "/register">Register</Link></p>
+        </div>
 )
 }
 
