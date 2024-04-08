@@ -32,7 +32,7 @@ function App() {
       <Route path = "/item/:name/:id" element = {<SingleItem token = {token} setToken = {setToken} userId = {userId} cartQuantity = {cartQuantity} setCartQuantity = {setCartQuantity}/>}/>
       <Route path = "/register" element = {<Register cartId = {cartId} setCartId = {setCartId} token = {token} setToken = {setToken} userId = {userId} setUserId = {setUserId}/>}/>
       <Route path = "/login" element = {<Login cartId = {cartId} setCartId = {setCartId} token = {token} setToken = {setToken} userId = {userId} setUserId = {setUserId}/>}/>
-      <Route path = "/cartitems" element = {<CartItems userId = {userId} token = {token}/>}/>
+      <Route path = "/cartitems" element = {<CartItems userId = {userId} token = {token} cartId = {cartId}/>}/>
     </Routes>
     
    </>

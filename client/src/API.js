@@ -193,3 +193,30 @@ export async function addToCart({cartid, products, token}){
     }
 
 }
+
+export async function updateQuantity({cartid, productid, newQuantity, token}){
+    try{
+        const response = await fetch(`${myURL}/api/cart/quantity`,{
+            method: 'PUT',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':token
+            },
+            body: JSON.stringify({
+                cartid: cartid,
+                productid: productid,
+                newQuantity:newQuantity
+            })
+        })
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+
+    catch(err){
+        console.error("error updating quantity" + err);
+    }
+
+
+
+}

@@ -89,7 +89,7 @@ const authenticate = async({username, password})=> {
     }
 
     const SQL = `
-      SELECT id, username FROM users WHERE username=$1
+      SELECT * FROM users WHERE username=$1
     `;
     const response = await client.query(SQL, [username]);
     if(!response.rows.length){
