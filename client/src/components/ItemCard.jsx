@@ -2,9 +2,8 @@ import {useNavigate} from "react-router-dom"
 import { updateQuantity } from "../API";
 import { useState } from "react";
 
-const ItemCard = ({item, cartId, token, setTotalPrice}) =>{
+const ItemCard = ({item, cartId, token, setTotalPrice,setCartQuantity}) =>{
     const navigate = useNavigate();
-    const [,forceUpdate] = useState();
 return(
     <div className = "itemcard" >
         <img src = {item.image} onClick = { () =>{navigate(`/item/${item.title}/${item.id}`)}}></img>
@@ -12,7 +11,7 @@ return(
         (
 
             <p>{item.title}<br></br>${item.price}<br></br>Quantity: 
-            <select name = "quantity" id = "quantity" onChange = {(e)=>{updateQuantity({cartid: cartId, productid:item.id, newQuantity:e.target.value, token:token });setTotalPrice("...")}}>
+            <select name = "quantity" id = "quantity" onChange = {(e)=>{updateQuantity({cartid: cartId, productid:item.id, newQuantity:e.target.value, token:token });setTotalPrice("...");setCartQuantity("...")}}>
             <option value = {item.quantity} selected>{item.quantity}</option>
             <option value = "1">1</option>
             <option value = "2">2</option>
