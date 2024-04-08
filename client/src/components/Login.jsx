@@ -1,10 +1,10 @@
 import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {userLogin, fetchCart} from '../API'
 
 const Login = ({cartId, setCartId,token,setToken,userId, setUserId, setUserInfo}) =>{
 const [user,setUser] = useState({username: "",password: ""})
-
+const navigate = useNavigate();
 const handleSubmit = async(e) =>{
     e.preventDefault();
     const data = await userLogin(user);
@@ -14,6 +14,7 @@ const handleSubmit = async(e) =>{
     setUserId(data.user.id);
     console.log(data);
     setUserInfo(data.user);
+    navigate("/account")
 }
 
 
