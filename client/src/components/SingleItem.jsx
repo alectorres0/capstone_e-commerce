@@ -25,7 +25,7 @@ const handleCheckOut = async(e) =>{
     const cart = await fetchCart({userid: userId, token: token});
     const quantityElement = document.getElementById('quantity');
     const selectedQuantity = quantityElement.value;
-    const product = {product_id: data.id, quantity: selectedQuantity}
+    const product = {product_id: data.id, quantity: parseInt(selectedQuantity)}
     const addedItem = await addToCart({cartid: cart.id, products: product, token:token});
     setCartQuantity(cartQuantity+=parseInt(selectedQuantity))
     console.log(addedItem);
