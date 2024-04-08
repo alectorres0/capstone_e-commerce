@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import {userLogin, fetchCart} from '../API'
 
-const Login = ({cartId, setCartId,token,setToken,userId, setUserId}) =>{
+const Login = ({cartId, setCartId,token,setToken,userId, setUserId, setUserInfo}) =>{
 const [user,setUser] = useState({username: "",password: ""})
 
 const handleSubmit = async(e) =>{
@@ -12,6 +12,7 @@ const handleSubmit = async(e) =>{
     setToken(data.token);
     setUserId(data.user.id);
     console.log(data);
+    setUserInfo(data.user);
 }
 
 
