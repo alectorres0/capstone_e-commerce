@@ -4,18 +4,21 @@ import {useNavigate} from "react-router-dom"
 
 const Cart = ({cartQuantity, setCartQuantity, userId, token}) =>{
     const navigate = useNavigate();
-    const getCartQuantity = async() =>{
-        const cart = await fetchCart({userid:userId, token:token})
-        if(cart.products){
-        let totalQuantity = 0;
-        cart.products.forEach((item)=>{
-            totalQuantity += parseInt(item.quantity);
-        })
-        setCartQuantity(totalQuantity);
-    }
-    }
+    useEffect(()=>{
+        const getCartQuantity = async() =>{
+            const cart = await fetchCart({userid:userId, token:token})
+            if(cart.products){
+            let totalQuantity = 0;
+            cart.products.forEach((item)=>{
+                totalQuantity += parseInt(item.quantity);
+            })
+            setCartQuantity(totalQuantity);
+        }
+        }
+        
+            getCartQuantity();
+    },[cartQuantity])
     
-        getCartQuantity();
     
 
     

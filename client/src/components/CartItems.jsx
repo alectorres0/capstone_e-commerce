@@ -6,7 +6,7 @@ import ItemCard from "./ItemCard";
 //loop throught cart products and grab id and quantity
 //get item info with product_id
 //create itemCard with item info and quantity and total price 
-const CartItems =({userId, token, cartId})=>{
+const CartItems =({userId, token, cartId, setCartQuantity})=>{
 const [cartItems, setCartItems] = useState([]);
 const [totalPrice, setTotalPrice] = useState(0);
 useEffect(()=>{
@@ -33,7 +33,7 @@ console.log(cartItems);
 return(
     <div>
     {cartItems.map((item)=>{
-        return (<ItemCard key = {item.id} item = {item} cartId = {cartId} token = {token} setTotalPrice = {setTotalPrice}/>)
+        return (<ItemCard key = {item.id} item = {item} cartId = {cartId} token = {token} setTotalPrice = {setTotalPrice} setCartQuantity = {setCartQuantity}/>)
 
     })}
     <h2>Total Price: ${totalPrice}</h2>
