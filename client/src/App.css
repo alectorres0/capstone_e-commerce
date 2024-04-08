@@ -56,7 +56,14 @@ padding: 20px;
 .cart>svg{
     width: 50px;
     height: 50px;
+    transition: width 0.3s ease-in-out;
+    transition: height 0.3s ease-in-out;
     
+}
+
+.cart>svg:hover{
+    width: 60px;
+    height: 60px;
 }
 .cart>span{
     margin-right: 5px;
@@ -70,6 +77,12 @@ padding: 20px;
 .accountSymbol>svg{
     width: 50px;
     height: 50px;
+    transition: width 0.3s ease-in-out;
+    transition: height 0.3s ease-in-out;
+}
+.accountSymbol>svg:hover{
+    width:60px;
+    height:60px;
 }
 
 .accountInfo{
@@ -79,4 +92,43 @@ padding: 20px;
     margin: auto;
     width: 50%;
     padding: 20px;
+}
+.navBar{
+    padding: 0px;
+    margin-bottom: 40px;
+}
+.navBar>nav{
+    padding: 0px;
+    height:30px;
+
+
+}
+.navBar>nav>ul{
+    list-style-type: none;
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+    padding: 0px;
+    border: 3px solid black;
+    border-radius: 20px;
+    height:50px;
+    
+
+}
+
+.navBar>nav>ul>li{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:50px;
+    padding: 0px;
+}
+.navBar>nav>ul>li:hover{
+    border: 2px solid black;
+}
+.navBar>nav>ul>li>a{
+    
+    color: blue;
+    align-items:center;
 }
