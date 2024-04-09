@@ -220,3 +220,26 @@ export async function updateQuantity({cartid, productid, newQuantity, token}){
 
 
 }
+
+export async function clearCart({cartid, token}){
+    try{
+        const response = await fetch(`${myURL}/api/cart/clear`,{
+            method: 'PUT',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':token
+            },
+            body: JSON.stringify({
+                cartid:cartid
+            })
+        })
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+
+    catch(err){
+
+        console.error("error clearing cart" + err);
+    }
+}

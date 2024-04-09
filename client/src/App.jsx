@@ -13,6 +13,7 @@ import Cart from "./components/Cart"
 import CartItems from './components/CartItems'
 import AccountSymbol from './components/AccountSymbol'
 import Account from './components/Account'
+import Checkout from './components/Checkout'
 import {Routes, Route} from "react-router-dom"
 function App() {
   const [cartId,setCartId] = useState(null);
@@ -20,6 +21,7 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [cartQuantity, setCartQuantity] = useState(0);
   const [userInfo, setUserInfo] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   return (
     <>
@@ -37,8 +39,9 @@ function App() {
       <Route path = "/item/:name/:id" element = {<SingleItem token = {token} setToken = {setToken} userId = {userId} cartQuantity = {cartQuantity} setCartQuantity = {setCartQuantity}/>}/>
       <Route path = "/register" element = {<Register cartId = {cartId} setCartId = {setCartId} token = {token} setToken = {setToken} userId = {userId} setUserId = {setUserId} setUserInfo = {setUserInfo}/>}/>
       <Route path = "/login" element = {<Login cartId = {cartId} setCartId = {setCartId} token = {token} setToken = {setToken} userId = {userId} setUserId = {setUserId} setUserInfo = {setUserInfo}/>}/>
-      <Route path = "/cartitems" element = {<CartItems userId = {userId} token = {token} cartId = {cartId} setCartQuantity = {setCartQuantity}/>}/>
-      <Route path = "/account" element = {<Account userInfo = {userInfo} setToken = {setToken}/>}/>
+      <Route path = "/cartitems" element = {<CartItems userId = {userId} token = {token} cartId = {cartId} setCartQuantity = {setCartQuantity} totalPrice = {totalPrice} setTotalPrice = {setTotalPrice}/>}/>
+      <Route path = "/account" element = {<Account userInfo = {userInfo} setToken = {setToken} setCartQuantity = {setCartQuantity} setTotalPrice = {setTotalPrice}/>}/>
+      <Route path = "/checkout" element = {<Checkout setCartQuantity = {setCartQuantity} totalPrice = {totalPrice} setTotalPrice = {setTotalPrice}  token = {token} cartId = {cartId}/>}/>
     </Routes>
     
    </>

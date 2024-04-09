@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom"
 
-const Account = ({userInfo, setToken}) =>{
+const Account = ({userInfo, setToken, setCartQuantity, setTotalPrice}) =>{
 const navigate = useNavigate();
 return(
     <>
@@ -11,7 +11,7 @@ return(
         <h2>Username: {userInfo.username}</h2>
         <h2>Email: {userInfo.email}</h2>
         <h2>Phone: {userInfo.phone}</h2>
-        <button onClick = {()=>{navigate("/login"); setToken(null)}}>Log Out</button>
+        <button onClick = {()=>{navigate("/login"); setToken(null); setCartQuantity(0); setTotalPrice(0) }}>Log Out</button>
     </div>
     </>
 )
