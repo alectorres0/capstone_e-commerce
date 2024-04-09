@@ -243,3 +243,26 @@ export async function clearCart({cartid, token}){
         console.error("error clearing cart" + err);
     }
 }
+
+export async function removeItem({cartid, productid, token}){
+    try{
+        const response = await fetch(`${myURL}/api/cart/remove`,{
+            method: 'PUT',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':token
+            },
+            body: JSON.stringify({
+                cartid: cartid,
+                productid: productid
+            })
+        })
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+
+    catch(err){
+        console.error("error removing item" + err)
+    }
+}
